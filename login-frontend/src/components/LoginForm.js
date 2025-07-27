@@ -26,7 +26,7 @@ function LoginForm() {
       if (window.google) {
         try {
           window.google.accounts.id.initialize({
-            client_id: "629878408234-5vd5i0ff2uf2ap9g4kfh4eaibgkmf67h.apps.googleusercontent.com",
+            client_id: "382910553104-25j7msqipehpplqbeag5un4a2dhf609i.apps.googleusercontent.com",
             callback: handleGoogleSignIn,
             auto_select: false,
             cancel_on_tap_outside: false,
