@@ -23,7 +23,7 @@ function LoginForm() {
     document.head.appendChild(script);
 
     script.onload = () => {
-      if (window.google) {
+      if (window.google && process.env.REACT_APP_GOOGLE_CLIENT_ID) {
         try {
           window.google.accounts.id.initialize({
             client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
@@ -139,25 +139,29 @@ function LoginForm() {
 
         {/* Login Form */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          {/* Google Sign-In for Users */}
-          <div className="mb-6">
-            <div className="text-center mb-4">
-              <p className="text-sm text-gray-600 mb-3">Sign in with Google</p>
-              
-              {/* Official Google Sign-In Button */}
-              <div id="google-signin-button" className="w-full"></div>
-            </div>
-          </div>
+          {/* Google Sign-In for Users - Only show if Google Client ID is configured */}
+          {process.env.REACT_APP_GOOGLE_CLIENT_ID && (
+            <>
+              <div className="mb-6">
+                <div className="text-center mb-4">
+                  <p className="text-sm text-gray-600 mb-3">Sign in with Google</p>
+                  
+                  {/* Official Google Sign-In Button */}
+                  <div id="google-signin-button" className="w-full"></div>
+                </div>
+              </div>
 
-          {/* Divider */}
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or</span>
-            </div>
-          </div>
+              {/* Divider */}
+              <div className="relative mb-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">Or</span>
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Admin/Worker Login Form */}
           <div className="mb-4">
