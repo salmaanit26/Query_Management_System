@@ -19,6 +19,7 @@ import {
   UserPlus,
   X
 } from 'lucide-react';
+import DemoNotification from './DemoNotification';
 
 const Dashboard = () => {
   const { isAdmin } = useAuth();
@@ -415,6 +416,9 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* Demo Mode Notification */}
+        <DemoNotification />
 
         {/* Error Message */}
         {error && (
