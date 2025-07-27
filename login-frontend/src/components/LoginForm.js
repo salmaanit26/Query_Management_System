@@ -23,10 +23,10 @@ function LoginForm() {
     document.head.appendChild(script);
 
     script.onload = () => {
-      if (window.google && process.env.REACT_APP_GOOGLE_CLIENT_ID) {
+      if (window.google) {
         try {
           window.google.accounts.id.initialize({
-            client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+            client_id: "629878408234-5vd5i0ff2uf2ap9g4kfh4eaibgkmf67h.apps.googleusercontent.com",
             callback: handleGoogleSignIn,
             auto_select: false,
             cancel_on_tap_outside: false,
@@ -72,25 +72,32 @@ function LoginForm() {
       
       console.log('Google Sign-In Response received');
       
-      // Send the Google token to your backend
-      const result = await authAPI.googleLogin(response.credential);
+      // Decode the JWT token to get user info
+      const token = response.credential;
+      const payload = JSON.parse(atob(token.split('.')[1]));
       
-      if (result.data.success) {
-        const user = result.data.user;
-        login(user);
-        
-        // Navigate to generic dashboard for all users
-        navigate('/dashboard');
-      } else {
-        setError(result.data.message || "Google sign-in failed");
-      }
+      // Create user object from Google response
+      const user = {
+        id: payload.sub,
+        email: payload.email,
+        firstName: payload.given_name,
+        lastName: payload.family_name,
+        role: 'STUDENT', // Default role for Google users
+        fullName: payload.name,
+        profilePicture: payload.picture
+      };
+      
+      console.log('Google user:', user);
+      
+      // Login the user
+      login(user);
+      
+      // Navigate to dashboard
+      navigate('/dashboard');
+      
     } catch (error) {
       console.error('Google Sign-In Error:', error);
-      if (error.response && error.response.data && error.response.data.message) {
-        setError(error.response.data.message);
-      } else {
-        setError("Google sign-in failed. Please try again.");
-      }
+      setError("Google sign-in failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -139,29 +146,25 @@ function LoginForm() {
 
         {/* Login Form */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          {/* Google Sign-In for Users - Only show if Google Client ID is configured */}
-          {process.env.REACT_APP_GOOGLE_CLIENT_ID && (
-            <>
-              <div className="mb-6">
-                <div className="text-center mb-4">
-                  <p className="text-sm text-gray-600 mb-3">Sign in with Google</p>
-                  
-                  {/* Official Google Sign-In Button */}
-                  <div id="google-signin-button" className="w-full"></div>
-                </div>
-              </div>
+          {/* Google Sign-In for All Users */}
+          <div className="mb-6">
+            <div className="text-center mb-4">
+              <p className="text-sm text-gray-600 mb-3">Sign in with Google</p>
+              
+              {/* Official Google Sign-In Button */}
+              <div id="google-signin-button" className="w-full"></div>
+            </div>
+          </div>
 
-              {/* Divider */}
-              <div className="relative mb-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or</span>
-                </div>
-              </div>
-            </>
-          )}
+          {/* Divider */}
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or</span>
+            </div>
+          </div>
 
           {/* Admin/Worker Login Form */}
           <div className="mb-4">
