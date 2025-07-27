@@ -40,6 +40,10 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public Optional<User> getUserByIdOptional(Long id) {
+        return userRepository.findById(id);
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -52,15 +56,52 @@ public class UserService {
         return userRepository.findWorkersByType(workerType);
     }
 
+    public List<User> getUsersByWorkerType(User.WorkerType workerType) {
+        return userRepository.findWorkersByType(workerType);
+    }
+
+    public User updateUserRole(Long id, User.Role role) {
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setRole(role);
+            return userRepository.save(user);
+        }
+        return null;
+    }
+
+    public Object getUserStats() {
+        List<User> allUsers = userRepository.findAll();
+        long totalUsersCount = allUsers.size();
+        long adminsCount = allUsers.stream().filter(u -> u.getRole() == User.Role.ADMIN).count();
+        long workersCount = allUsers.stream().filter(u -> u.getRole() == User.Role.WORKER).count();
+        long studentsCount = allUsers.stream().filter(u -> u.getRole() == User.Role.STUDENT).count();
+        
+        return new Object() {
+            public final long totalUsers = totalUsersCount;
+            public final long admins = adminsCount;
+            public final long workers = workersCount;
+            public final long students = studentsCount;
+        };
+    }
+
     public User saveUser(User user) {
+        // Validate that password is not null or empty for new users
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+            throw new RuntimeException("Password is required");
+        }
+        
         // Encrypt password if it's not already encrypted
-        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
+        if (!user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         return userRepository.save(user);
     }
 
     public User registerUser(User user) {
+        System.out.println("Registering user: " + user.getName() + " with email: " + user.getEmail());
+        System.out.println("Password provided: " + (user.getPassword() != null && !user.getPassword().trim().isEmpty() ? "Yes" : "No"));
+        
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
@@ -76,9 +117,13 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        System.out.println("Updating user with ID: " + user.getId());
+        System.out.println("Password provided: " + (user.getPassword() != null ? "Yes (length: " + user.getPassword().length() + ")" : "No"));
+        
         Optional<User> existingUserOpt = userRepository.findById(user.getId());
         if (existingUserOpt.isPresent()) {
             User existingUser = existingUserOpt.get();
+            System.out.println("Found existing user: " + existingUser.getName());
             
             // Update fields
             existingUser.setName(user.getName());
@@ -89,10 +134,15 @@ public class UserService {
             
             // Only update password if provided
             if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                System.out.println("Updating password for user: " + existingUser.getName());
                 existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            } else {
+                System.out.println("Password not provided or empty, keeping existing password");
             }
             
-            return userRepository.save(existingUser);
+            User savedUser = userRepository.save(existingUser);
+            System.out.println("User updated successfully: " + savedUser.getName());
+            return savedUser;
         } else {
             throw new RuntimeException("User not found");
         }
@@ -154,5 +204,79 @@ public class UserService {
 
     public List<User> getWorkers() {
         return userRepository.findByRole(User.Role.WORKER);
+    }
+
+    public void addSampleUsers() {
+        // Add sample students
+        if (!userRepository.existsByEmail("student1@college.edu")) {
+            User student1 = User.builder()
+                    .name("Alice Johnson")
+                    .email("student1@college.edu")
+                    .password(passwordEncoder.encode("password123"))
+                    .role(User.Role.STUDENT)
+                    .phone("9876543211")
+                    .build();
+            userRepository.save(student1);
+        }
+
+        if (!userRepository.existsByEmail("student2@college.edu")) {
+            User student2 = User.builder()
+                    .name("Bob Smith")
+                    .email("student2@college.edu")
+                    .password(passwordEncoder.encode("password123"))
+                    .role(User.Role.STUDENT)
+                    .phone("9876543212")
+                    .build();
+            userRepository.save(student2);
+        }
+
+        // Add sample workers
+        if (!userRepository.existsByEmail("electrician2@college.edu")) {
+            User electrician = User.builder()
+                    .name("David Electrician")
+                    .email("electrician2@college.edu")
+                    .password(passwordEncoder.encode("password123"))
+                    .role(User.Role.WORKER)
+                    .workerType(User.WorkerType.ELECTRICIAN)
+                    .phone("9876543213")
+                    .build();
+            userRepository.save(electrician);
+        }
+
+        if (!userRepository.existsByEmail("plumber2@college.edu")) {
+            User plumber = User.builder()
+                    .name("Sarah Plumber")
+                    .email("plumber2@college.edu")
+                    .password(passwordEncoder.encode("password123"))
+                    .role(User.Role.WORKER)
+                    .workerType(User.WorkerType.PLUMBER)
+                    .phone("9876543214")
+                    .build();
+            userRepository.save(plumber);
+        }
+
+        if (!userRepository.existsByEmail("carpenter2@college.edu")) {
+            User carpenter = User.builder()
+                    .name("Mike Carpenter")
+                    .email("carpenter2@college.edu")
+                    .password(passwordEncoder.encode("password123"))
+                    .role(User.Role.WORKER)
+                    .workerType(User.WorkerType.CARPENTER)
+                    .phone("9876543215")
+                    .build();
+            userRepository.save(carpenter);
+        }
+
+        // Add sample admin
+        if (!userRepository.existsByEmail("admin2@college.edu")) {
+            User admin = User.builder()
+                    .name("Super Admin")
+                    .email("admin2@college.edu")
+                    .password(passwordEncoder.encode("password123"))
+                    .role(User.Role.ADMIN)
+                    .phone("9876543216")
+                    .build();
+            userRepository.save(admin);
+        }
     }
 }

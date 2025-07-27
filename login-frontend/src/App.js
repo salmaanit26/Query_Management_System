@@ -1,12 +1,16 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import Layout from "./components/Layout";
 import LoginForm from "./components/LoginForm";
 import Dashboard from "./components/Dashboard";
-import QueryForm from "./components/QueryForm";
 import SimpleQueryForm from "./components/SimpleQueryForm";
 import WorkerDashboard from "./components/WorkerDashboard";
+import Venues from "./components/Venues";
+import Profile from "./components/Profile";
+import Users from "./components/Users";
+import Settings from "./components/Settings";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -40,15 +44,16 @@ const PublicRoute = ({ children }) => {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="App">
-          <Routes>
-            <Route path="/login" element={
-              <PublicRoute>
-                <LoginForm />
-              </PublicRoute>
-            } />
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <div className="App">
+            <Routes>
+              <Route path="/login" element={
+                <PublicRoute>
+                  <LoginForm />
+                </PublicRoute>
+              } />
             
             <Route path="/" element={
               <ProtectedRoute>
@@ -58,18 +63,18 @@ function App() {
               <Route index element={<Navigate to="/dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="worker-dashboard" element={<WorkerDashboard />} />
-              <Route path="query-form" element={<QueryForm />} />
-              <Route path="profile" element={<div>Profile Page - Coming Soon</div>} />
+              <Route path="query-form" element={<SimpleQueryForm />} />
+              <Route path="profile" element={<Profile />} />
               <Route path="new-query" element={<SimpleQueryForm />} />
-              <Route path="venues" element={<div>Venues Page - Coming Soon</div>} />
-              <Route path="users" element={<div>Users Page - Coming Soon</div>} />
-              <Route path="analytics" element={<div>Analytics Page - Coming Soon</div>} />
-              <Route path="settings" element={<div>Settings Page - Coming Soon</div>} />
+              <Route path="venues" element={<Venues />} />
+              <Route path="users" element={<Users />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
           </Routes>
         </div>
       </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

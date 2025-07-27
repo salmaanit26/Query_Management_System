@@ -11,7 +11,6 @@ import {
   X,
   Settings,
   Users,
-  BarChart3,
   Wrench
 } from 'lucide-react';
 
@@ -27,14 +26,13 @@ const Layout = () => {
   };
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: Home, show: true },
+    { name: 'Dashboard', href: '/dashboard', icon: Home, show: !isWorker }, // Hide regular dashboard for workers
     { name: 'Worker Dashboard', href: '/worker-dashboard', icon: Wrench, show: isWorker },
     { name: 'Profile', href: '/profile', icon: User, show: true },
-    { name: 'New Query', href: '/new-query', icon: PlusCircle, show: true },
-    { name: 'All Venues', href: '/venues', icon: Building, show: true },
+    { name: 'New Query', href: '/new-query', icon: PlusCircle, show: !isWorker }, // Hide for workers
+    { name: 'All Venues', href: '/venues', icon: Building, show: !isWorker }, // Hide for workers
     { name: 'Manage Users', href: '/users', icon: Users, show: isAdmin },
-    { name: 'Analytics', href: '/analytics', icon: BarChart3, show: isAdmin },
-    { name: 'Settings', href: '/settings', icon: Settings, show: isAdmin },
+    { name: 'Settings', href: '/settings', icon: Settings, show: true }, // Show for all users
   ];
 
   const filteredNavigation = navigation.filter(item => item.show);

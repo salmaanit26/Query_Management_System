@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 @RestController
@@ -104,73 +103,5 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @GetMapping("/users/role/{role}")
-    public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
-        try {
-            User.Role userRole = User.Role.valueOf(role.toUpperCase());
-            List<User> users = userService.getUsersByRole(userRole);
-            return ResponseEntity.ok(users);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @GetMapping("/users/workers/{workerType}")
-    public ResponseEntity<List<User>> getWorkersByType(@PathVariable String workerType) {
-        try {
-            User.WorkerType type = User.WorkerType.valueOf(workerType.toUpperCase());
-            List<User> workers = userService.getWorkersByType(type);
-            return ResponseEntity.ok(workers);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        try {
-            user.setId(id);
-            User updatedUser = userService.updateUser(user);
-            return ResponseEntity.ok(updatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        try {
-            userService.deleteUser(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @GetMapping("/users/search")
-    public ResponseEntity<List<User>> searchUsers(@RequestParam String keyword) {
-        List<User> users = userService.searchUsers(keyword);
-        return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("/users/workers")
-    public ResponseEntity<List<User>> getWorkers() {
-        List<User> workers = userService.getWorkers();
-        return ResponseEntity.ok(workers);
-    }
 }

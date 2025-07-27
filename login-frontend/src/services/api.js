@@ -20,6 +20,7 @@ export const authAPI = {
 export const usersAPI = {
   getAllUsers: () => api.get('/users'),
   getUserById: (id) => api.get(`/users/${id}`),
+  createUser: (userData) => api.post('/users', userData),
   getUsersByRole: (role) => api.get(`/users/role/${role}`),
   getWorkersByType: (workerType) => api.get(`/users/workers/${workerType}`),
   updateUser: (id, userData) => api.put(`/users/${id}`, userData),

@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     List<User> findByRole(User.Role role);
     
+    long countByRole(User.Role role);
+    
     List<User> findByWorkerType(User.WorkerType workerType);
     
     @Query("SELECT u FROM User u WHERE u.role = 'WORKER' AND u.workerType = :workerType")

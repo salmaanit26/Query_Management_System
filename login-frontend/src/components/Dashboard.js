@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { 
   Search, 
   Filter,
@@ -21,6 +22,7 @@ import {
 
 const Dashboard = () => {
   const { isAdmin } = useAuth();
+  const { theme } = useTheme();
   const [queries, setQueries] = useState([]);
   const [filteredQueries, setFilteredQueries] = useState([]);
   const [workers, setWorkers] = useState([]);
@@ -255,70 +257,70 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className={`min-h-screen py-8 px-4 sm:px-6 lg:px-8 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Query Dashboard</h1>
-          <p className="text-gray-600">View and track all submitted queries</p>
+          <h1 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Query Dashboard</h1>
+          <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>View and track all submitted queries</p>
         </div>
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className={`rounded-lg shadow-md p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <Users className="h-8 w-8 text-blue-500" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Queries</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+                <p className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Total Queries</p>
+                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{stats.total}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className={`rounded-lg shadow-md p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <Clock className="h-8 w-8 text-yellow-500" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Pending</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.pending}</p>
+                <p className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Pending</p>
+                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{stats.pending}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className={`rounded-lg shadow-md p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <TrendingUp className="h-8 w-8 text-purple-500" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">In Progress</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.inProgress}</p>
+                <p className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>In Progress</p>
+                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{stats.inProgress}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className={`rounded-lg shadow-md p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <CheckCircle className="h-8 w-8 text-green-500" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Resolved</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.resolved}</p>
+                <p className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Resolved</p>
+                <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{stats.resolved}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className={`rounded-lg shadow-md p-6 mb-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <div className="flex items-center mb-4">
-            <Filter className="h-5 w-5 text-gray-500 mr-2" />
-            <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+            <Filter className={`h-5 w-5 mr-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`} />
+            <h2 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Filters</h2>
             <button
               onClick={() => {
                 setSearchTerm('');
@@ -335,14 +337,18 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Search */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+              <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Search</label>
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Search className={`absolute left-3 top-3 h-4 w-4 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'}`} />
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    theme === 'dark' 
+                      ? 'border-gray-600 bg-gray-700 text-white placeholder-gray-400' 
+                      : 'border-gray-300 bg-white text-gray-900'
+                  }`}
                   placeholder="Search queries..."
                 />
               </div>
@@ -350,11 +356,15 @@ const Dashboard = () => {
 
             {/* Category Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Category</label>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  theme === 'dark' 
+                    ? 'border-gray-600 bg-gray-700 text-white' 
+                    : 'border-gray-300 bg-white text-gray-900'
+                }`}
               >
                 {categories.map(category => (
                   <option key={category.value} value={category.value}>
@@ -366,11 +376,15 @@ const Dashboard = () => {
 
             {/* Priority Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+              <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Priority</label>
               <select
                 value={selectedPriority}
                 onChange={(e) => setSelectedPriority(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  theme === 'dark' 
+                    ? 'border-gray-600 bg-gray-700 text-white' 
+                    : 'border-gray-300 bg-white text-gray-900'
+                }`}
               >
                 {priorities.map(priority => (
                   <option key={priority.value} value={priority.value}>
@@ -382,11 +396,15 @@ const Dashboard = () => {
 
             {/* Status Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+              <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Status</label>
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  theme === 'dark' 
+                    ? 'border-gray-600 bg-gray-700 text-white' 
+                    : 'border-gray-300 bg-white text-gray-900'
+                }`}
               >
                 {statuses.map(status => (
                   <option key={status.value} value={status.value}>
@@ -400,13 +418,21 @@ const Dashboard = () => {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <div className={`mb-6 p-4 border rounded-lg ${
+            theme === 'dark' 
+              ? 'bg-red-900/20 border-red-800 text-red-400' 
+              : 'bg-red-50 border-red-200 text-red-700'
+          }`}>
             <div className="flex items-center">
               <AlertCircle className="h-5 w-5 text-red-500 mr-3" />
-              <p className="text-red-700">{error}</p>
+              <p>{error}</p>
               <button
                 onClick={fetchQueries}
-                className="ml-auto text-sm text-red-600 hover:text-red-800 underline"
+                className={`ml-auto text-sm underline ${
+                  theme === 'dark' 
+                    ? 'text-red-400 hover:text-red-300' 
+                    : 'text-red-600 hover:text-red-800'
+                }`}
               >
                 Retry
               </button>
@@ -417,10 +443,10 @@ const Dashboard = () => {
         {/* Queries List */}
         <div className="space-y-6">
           {filteredQueries.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-md p-12 text-center">
-              <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No queries found</h3>
-              <p className="text-gray-500">
+            <div className={`rounded-lg shadow-md p-12 text-center ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+              <FileText className={`h-12 w-12 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'}`} />
+              <h3 className={`text-lg font-medium mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>No queries found</h3>
+              <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                 {queries.length === 0 
                   ? "No queries have been submitted yet." 
                   : "No queries match your current filters. Try adjusting your search criteria."
@@ -433,15 +459,15 @@ const Dashboard = () => {
               const statusStyle = getStatusStyle(query.status);
 
               return (
-                <div key={query.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <div key={query.id} className={`rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{query.title}</h3>
-                      <p className="text-gray-600 mb-4">{query.description}</p>
+                      <h3 className={`text-xl font-semibold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{query.title}</h3>
+                      <p className={`mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{query.description}</p>
                     </div>
                     {query.imagePath && (
                       <div className="ml-4 flex-shrink-0">
-                        <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
+                        <div className={`w-16 h-16 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}>
                           <img
                             src={`http://localhost:8080${query.imagePath}`}
                             alt="Query attachment"
@@ -456,8 +482,8 @@ const Dashboard = () => {
                   <div className="flex flex-wrap items-center gap-4 mb-4">
                     {/* Category */}
                     <div className="flex items-center">
-                      <Tag className="h-4 w-4 text-gray-500 mr-1" />
-                      <span className="text-sm font-medium text-gray-700">{query.category}</span>
+                      <Tag className={`h-4 w-4 mr-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`} />
+                      <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{query.category}</span>
                     </div>
 
                     {/* Priority */}
@@ -473,75 +499,81 @@ const Dashboard = () => {
                     </div>
 
                     {/* Date */}
-                    <div className="flex items-center text-sm text-gray-500">
+                    <div className={`flex items-center text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                       <Calendar className="h-4 w-4 mr-1" />
                       {formatDate(query.createdAt)}
                     </div>
                   </div>
 
                   {/* Additional Info */}
-                  <div className="border-t pt-4 mt-4">
+                  <div className={`border-t pt-4 mt-4 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
-                        <span className="font-medium text-gray-500">Query ID:</span>
-                        <span className="ml-1 text-gray-900">#{query.id}</span>
+                        <span className={`font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Query ID:</span>
+                        <span className={`ml-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>#{query.id}</span>
                       </div>
                       {query.venue && (
                         <div>
-                          <span className="font-medium text-gray-500">Venue:</span>
-                          <span className="ml-1 text-gray-900">{query.venue.name}</span>
+                          <span className={`font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Venue:</span>
+                          <span className={`ml-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{query.venue.name}</span>
                         </div>
                       )}
                       {query.assignedToWorker && (
                         <div>
-                          <span className="font-medium text-gray-500">Assigned to:</span>
-                          <span className="ml-1 text-gray-900">{query.assignedToWorker.name}</span>
+                          <span className={`font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Assigned to:</span>
+                          <span className={`ml-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{query.assignedToWorker.name}</span>
                         </div>
                       )}
                       {query.resolvedAt && (
                         <div>
-                          <span className="font-medium text-gray-500">Resolved:</span>
-                          <span className="ml-1 text-gray-900">{formatDate(query.resolvedAt)}</span>
+                          <span className={`font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Resolved:</span>
+                          <span className={`ml-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{formatDate(query.resolvedAt)}</span>
                         </div>
                       )}
                     </div>
                     
                     {/* Completion Information for Resolved Queries */}
                     {query.status === 'RESOLVED' && (
-                      <div className="mt-4 pt-4 border-t border-gray-200">
-                        <h4 className="text-sm font-medium text-gray-700 mb-3">Work Completed</h4>
-                        <div className="text-xs text-gray-500 mb-2">
+                      <div className={`mt-4 pt-4 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+                        <h4 className={`text-sm font-medium mb-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Work Completed</h4>
+                        <div className={`text-xs mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                           Completed by: {query.completedByUser?.name || 'Unknown'} on {formatDate(query.resolvedAt)}
                         </div>
                         {query.completionNotes && (
                           <div className="mb-3">
-                            <span className="text-sm font-medium text-gray-500 block mb-1">Completion Notes:</span>
-                            <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg border">{query.completionNotes}</p>
+                            <span className={`text-sm font-medium block mb-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Completion Notes:</span>
+                            <p className={`text-sm p-3 rounded-lg border ${
+                              theme === 'dark' 
+                                ? 'text-gray-300 bg-gray-700 border-gray-600' 
+                                : 'text-gray-700 bg-gray-50 border-gray-200'
+                            }`}>{query.completionNotes}</p>
                           </div>
                         )}
                         {query.completionImagePath && (
                           <div>
-                            <span className="text-sm font-medium text-gray-500 block mb-2">Completion Evidence:</span>
+                            <span className={`text-sm font-medium block mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Completion Evidence:</span>
                             <img
                               src={`http://localhost:8080${query.completionImagePath}`}
                               alt="Completion evidence"
-                              className="w-40 h-40 object-cover rounded-lg border-2 border-gray-200 cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"
+                              className={`w-40 h-40 object-cover rounded-lg border-2 cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 ${
+                                theme === 'dark' ? 'border-gray-600' : 'border-gray-200'
+                              }`}
                               onClick={() => window.open(`http://localhost:8080${query.completionImagePath}`, '_blank')}
                               title="Click to view full image"
                             />
                           </div>
                         )}
                         {!query.completionNotes && !query.completionImagePath && (
-                          <div className="text-sm text-gray-500 italic">No completion details provided.</div>
+                          <div className={`text-sm italic ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>No completion details provided.</div>
                         )}
                       </div>
                     )}
                     
                     {/* Admin Actions */}
                     {isAdmin && (
-                      <div className="mt-4 pt-4 border-t border-gray-200">
+                      <div className={`mt-4 pt-4 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-gray-700">Admin Actions:</span>
+                          <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Admin Actions:</span>
                           <div className="flex space-x-2">
                             <button
                               onClick={() => {
