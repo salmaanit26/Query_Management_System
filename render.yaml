@@ -3,7 +3,7 @@ services:
     name: college-queries-api
     runtime: java
     rootDir: loginapp
-    buildCommand: ./mvnw clean package -DskipTests
+    buildCommand: bash ../build-render.sh
     startCommand: java -jar target/*.jar
     plan: free
     envVars:
