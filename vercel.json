@@ -7,16 +7,12 @@
       "config": {
         "distDir": "build"
       }
-    },
-    {
-      "src": "loginapp/pom.xml",
-      "use": "@vercel/java"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/loginapp/$1"
+      "dest": "https://your-heroku-app.herokuapp.com/api/$1"
     },
     {
       "src": "/(.*)",
@@ -24,6 +20,6 @@
     }
   ],
   "env": {
-    "SPRING_PROFILES_ACTIVE": "vercel"
+    "REACT_APP_API_URL": "https://your-heroku-app.herokuapp.com/api"
   }
 }
