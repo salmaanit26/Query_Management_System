@@ -25,9 +25,25 @@ public class UserService {
         Optional<User> userOpt = userRepository.findByEmail(email);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            // For backward compatibility, check both plain text and encrypted passwords
-            return user.getPassword().equals(password) || 
-                   passwordEncoder.matches(password, user.getPassword());
+            System.out.println("Login attempt - Email: " + email + ", Password: " + password);
+            System.out.println("User found - Stored password: " + user.getPassword());
+            
+            // For local development, use simple text comparison first
+            if (user.getPassword().equals(password)) {
+                System.out.println("Plain text password match!");
+                return true;
+            }
+            
+            // Check if stored password is hashed and try BCrypt validation
+            if (user.getPassword().startsWith("$2a$") || user.getPassword().startsWith("$2b$")) {
+                boolean matches = passwordEncoder.matches(password, user.getPassword());
+                System.out.println("BCrypt password match: " + matches);
+                return matches;
+            }
+            
+            System.out.println("No password match found");
+        } else {
+            System.out.println("User not found for email: " + email);
         }
         return false;
     }
@@ -91,10 +107,9 @@ public class UserService {
             throw new RuntimeException("Password is required");
         }
         
-        // Encrypt password if it's not already encrypted
-        if (!user.getPassword().startsWith("$2a$")) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
+        // For local development, keep passwords as plain text
+        // Don't encrypt passwords to make login easier
+        System.out.println("Saving user with plain text password for local development");
         return userRepository.save(user);
     }
 
