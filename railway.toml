@@ -1,8 +1,0 @@
-[build]
-builder = "nixpacks"
-buildCommand = "cd loginapp && ./mvnw clean package -DskipTests"
-
-[deploy]
-startCommand = "cd loginapp && java -jar target/*.jar"
-restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 10
