@@ -2,6 +2,28 @@
 
 A comprehensive web-based query management system for educational institutions to handle facility maintenance requests, student complaints, and infrastructure issues.
 
+## 🚀 Live Demo
+**Production URL**: [Deploy to Vercel](https://vercel.com/import/git?s=https://github.com/salmaanit26/Query_Management_System)
+
+## 🏗️ Technology Stack
+
+**Frontend:**
+- React.js with modern hooks
+- Tailwind CSS for styling
+- Context API for state management
+- Lucide React for icons
+
+**Backend:**
+- Spring Boot 3.5.3
+- Spring Security for authentication
+- JPA/Hibernate for ORM
+- SQLite database (production-ready)
+
+**Deployment:**
+- Vercel for hosting
+- File-based SQLite database
+- Automatic CI/CD from GitHub
+
 ## 🏗️ Project Structure
 
 ```
