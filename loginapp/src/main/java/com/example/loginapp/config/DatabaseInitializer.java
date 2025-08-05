@@ -69,6 +69,24 @@ public class DatabaseInitializer implements CommandLineRunner {
         userRepository.save(worker);
         System.out.println("Worker user updated/created with plain text password");
         
+        // Update existing Alex Network user or create new one
+        Optional<User> alexOpt = userRepository.findByEmail("alex.network@company.com");
+        User alex;
+        if (alexOpt.isPresent()) {
+            alex = alexOpt.get();
+            System.out.println("Found existing Alex Network user, updating password...");
+        } else {
+            alex = new User();
+            alex.setName("Alex Network");
+            alex.setEmail("alex.network@company.com");
+            alex.setRole(User.Role.WORKER);
+            alex.setWorkerType(User.WorkerType.NETWORK);
+            System.out.println("Creating new Alex Network user...");
+        }
+        alex.setPassword("password");  // Reset to plain text for local development
+        userRepository.save(alex);
+        System.out.println("Alex Network user updated/created with plain text password");
+        
         System.out.println("All users now have plain text password 'password' for local development!");
     }
 }
